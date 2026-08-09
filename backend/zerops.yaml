@@ -1,0 +1,17 @@
+zerops:
+  - setup: nodejs
+    build:
+      base: nodejs@22
+      buildCommands:
+        - npm ci
+        - npm run build
+      deployFiles:
+        - dist/
+        - package.json
+        - node_modules/
+    run:
+      base: nodejs@22
+      ports:
+        - port: 3001
+          httpSupport: true
+      start: node dist/server.js

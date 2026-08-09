@@ -1,0 +1,28 @@
+zerops:
+  - setup: frontend
+    build:
+      base: nodejs@22
+      buildCommands:
+        - npm ci --prefix frontend
+        - npm run build --prefix frontend
+      deployFiles:
+        - frontend/dist/
+    run:
+      base: static
+
+  - setup: backend
+    build:
+      base: nodejs@22
+      buildCommands:
+        - cd backend && npm ci
+        - cd backend && npm run build
+      deployFiles:
+        - backend/dist/
+        - backend/package.json
+        - backend/node_modules/
+    run:
+      base: nodejs@22
+      ports:
+        - port: 3001
+          httpSupport: true
+      start: node backend/dist/server.js
