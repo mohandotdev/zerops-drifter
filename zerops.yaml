@@ -3,7 +3,7 @@ zerops:
     build:
       base: nodejs@22
       buildCommands:
-        - npm ci --prefix frontend
+        - npm install --prefix frontend
         - npm run build --prefix frontend
       deployFiles:
         - frontend/dist/
