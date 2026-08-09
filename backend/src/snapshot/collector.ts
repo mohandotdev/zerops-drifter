@@ -7,7 +7,7 @@ export async function collectSnapshot(
   projectId: string
 ): Promise<EnvironmentSnapshot> {
   const [projects, envFile, stacks] = await Promise.all([
-    client.getProjects(process.env.ZEROPS_CLIENT_ID!),
+    client.getProjects(process.env.PLATFORM_CLIENT_ID!),
     client.getEnvFile(projectId),
     client.getServiceStacks(projectId)
   ]);

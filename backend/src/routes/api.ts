@@ -6,11 +6,11 @@ import { compareSnapshots } from "../diff/engine.js";
 const router = Router();
 
 function client() {
-  const token = process.env.ZEROPS_TOKEN;
-  const base = process.env.ZEROPS_API_BASE;
+  const token = process.env.PLATFORM_API_TOKEN;
+  const base = process.env.PLATFORM_API_URL;
 
   if (!token || !base) {
-    throw new Error("ZEROPS_TOKEN and ZEROPS_API_BASE must be configured.");
+    throw new Error("PLATFORM_API_TOKEN and PLATFORM_API_URL must be configured.");
   }
 
   return new ZeropsClient(base, token);
@@ -22,7 +22,7 @@ router.get("/health", (_req, res) => {
 
 router.get("/projects", async (_req, res) => {
   try {
-    const result = await client().getProjects(process.env.ZEROPS_CLIENT_ID!);
+    const result = await client().getProjects(process.env.PLATFORM_CLIENT_ID!);
     res.json(result);
   } catch (error) {
     res.status(502).json({ error: (error as Error).message });
