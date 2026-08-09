@@ -6,7 +6,7 @@ zerops:
         - npm install --prefix frontend
         - npm run build --prefix frontend
       deployFiles:
-        - frontend/dist/
+        - frontend/.output/
     run:
       base: static
 
