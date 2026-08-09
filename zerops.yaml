@@ -3,7 +3,7 @@ zerops:
     build:
       base: nodejs@22
       envVariables:
-        VITE_API_URL: https://backend-2e60-3001.prg1.zerops.app/
+        VITE_API_BASE_URL: https://backend-2e60-3001.prg1.zerops.app/
       buildCommands:
         - npm install --prefix frontend
         - npm run build --prefix frontend
