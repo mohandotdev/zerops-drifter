@@ -2,92 +2,67 @@
 
 Semantic configuration drift detection for Zerops environments.
 
-## Problem
+Parity Radar compares two live Zerops environments, typically staging and production, and turns raw configuration differences into clear, severity-ranked findings.
 
-Staging and production can be created from the same infrastructure primitives
-while gradually diverging in runtime and environment configuration.
+## What it does
 
-Raw configuration diffs produce noise.
-
-Parity Radar turns those differences into meaningful findings.
-
-## What It Does
-
-Zerops Project
-↓
-Environment Snapshot
-↓
-Normalization
-↓
-Configuration Diff
-↓
-Semantic Drift Rules
-↓
-Actionable Findings
+- Connects to the Zerops API through a backend service
+- Collects environment and service configuration from two projects
+- Builds a canonical snapshot for each environment
+- Applies semantic drift rules to highlight meaningful differences
+- Presents the results in a React-based UI
 
 ## Example
 
-Staging:
-Node.js v24.16.0
-PARITY_TEST=true
+A staging and production environment may look similar at first but drift in areas such as:
 
-Production:
-Node.js v22.22.3
-PARITY_TEST=missing
+- runtime version
+- environment variables
+- resource and autoscaling settings
+- startup configuration
+- networking configuration
 
-Parity Radar reports:
-
-HIGH — Runtime drift
-HIGH — Missing environment variable
-EXPECTED — Environment identity difference
-
-## Why Zerops
-
-Parity Radar uses Zerops as the source of truth for environment
-and service configuration.
-
-It consumes Zerops project, environment, and service-stack APIs
-rather than relying on manually maintained configuration files.
+Parity Radar surfaces the differences that matter, instead of leaving them as a noisy raw diff.
 
 ## Architecture
 
-[diagram]
+- Backend: Node.js + Express
+  - Discovers Zerops projects
+  - Collects environment and service configuration
+  - Builds a normalized snapshot model for each environment
+  - Applies semantic drift rules to generate findings
+  - Exposes comparison endpoints to the frontend
+- Frontend: React + TypeScript
+  - Loads available projects
+  - Lets users select a staging and production environment
+  - Calls the backend comparison API
+  - Displays findings, summaries, and details in a clear UI
+- Deployment: Zerops monorepo setup via the root zerops.yaml file
 
-## Supported Drift Rules
-
-- Runtime version drift
-- Environment variable presence/value drift
-- Environment identity classification
-- Resource/autoscaling drift
-- Startup configuration drift
-- Networking configuration drift
-- Unknown/unclassified changes
-
-## Running Locally
+## Running locally
 
 ### Backend
 
-...
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+The backend runs on port 3001 and exposes the comparison API endpoints.
 
 ### Frontend
 
-...
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ## Security
 
-The Zerops API token is stored only on the backend.
-The frontend never receives the token.
+The Zerops API token is handled by the backend only. The frontend never receives it.
 
-## Limitations
+## Current scope
 
-Current version focuses on configuration-level drift.
-It does not inspect application runtime behavior, traffic,
-logs, or application-level correctness.
-
-## Future Work
-
-- More semantic drift rules
-- Historical drift tracking
-- CI/CD integration
-- Pull-request drift reports
-- Scheduled comparisons
+This version focuses on configuration-level drift detection. It does not attempt to infer application runtime behavior, traffic, logs, or database state.
