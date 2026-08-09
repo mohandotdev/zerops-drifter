@@ -30,6 +30,13 @@ zerops:
 
     run:
       base: nodejs@22
+      envVariables:
+        PLATFORM_API_URL: https://api.app-prg1.zerops.io/api/rest/public
+        PLATFORM_CLIENT_ID: clAhP9lDSH6EWD7hIjQjfQ
+        STAGING_PROJECT_ID: elq3Bx61R3OMdSUHH2lm7w
+        PRODUCTION_PROJECT_ID: XUhhqDkAT2WOEIRNB8OBvw
+        PORT: "3001"
+        CORS_ORIGIN: https://frontend-2e60-3000.prg1.zerops.app
       ports:
         - port: 3001
           httpSupport: true
