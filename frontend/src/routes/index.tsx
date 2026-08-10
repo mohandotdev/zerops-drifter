@@ -20,6 +20,10 @@ const TITLE = "Parity Radar — Environment configuration drift detection";
 const DESCRIPTION =
   "Compare a staging and a production Zerops environment and surface meaningful configuration drift instead of raw JSON diffs.";
 
+const SCAN_MIN_DURATION = 5000;
+
+const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -63,12 +67,24 @@ function ParityRadar() {
 
   async function runComparison() {
     if (!stagingId || !productionId) return;
+
     setScanning(true);
     setResult(null);
     setCompareError(null);
     setFilter("all");
+
+    const startedAt = Date.now();
+
     try {
       const comparison = await fetchComparison(stagingId, productionId);
+
+      const elapsed = Date.now() - startedAt;
+      const remaining = Math.max(SCAN_MIN_DURATION - elapsed, 0);
+
+      if (remaining > 0) {
+        await wait(remaining);
+      }
+
       setResult(comparison);
     } catch (error) {
       setCompareError(error instanceof Error ? error.message : "Comparison failed.");
